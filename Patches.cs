@@ -21,7 +21,7 @@ internal class Patches
     {
         if (__instance.itemProperties.itemName == "Painting")
         {
-            UpdateTexture(Plugin.PaintingFiles, __instance.mainObjectRenderer.material);
+            UpdateTexture(Plugin.PaintingFiles, __instance.mainObjectRenderer.sharedMaterial);
         }
     }
 
@@ -31,7 +31,7 @@ internal class Patches
         
         var index = Plugin.Rand.Next(files.Count);
         
-        var texture = new Texture2D(512, 512);
+        var texture = new Texture2D(2, 2);
         Logger.LogInfo($"Patching {material.name} with {files[index]}");
         texture.LoadImage(File.ReadAllBytes(files[index]));
         material.mainTexture = texture;
