@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data.Odbc;
 using System.IO;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -14,21 +13,6 @@ internal class Patches
     public static void Init(ManualLogSource logger)
     {
         Logger = logger;
-    }
-    
-    private static void UpdateMaterials(int seed)
-    {
-        Logger.LogInfo("Patching the textures");
-
-        Plugin.Rand = new System.Random(seed);
-
-        foreach (var obj in (GameObject[])Object.FindObjectsOfType(typeof(GameObject)))
-        {
-            if (obj.name == "Painting" || obj.name == "Painting(Clone)")
-            {
-                UpdateTexture(Plugin.PaintingFiles, obj.GetComponent<MeshRenderer>().material);
-            }
-        }
     }
 
     [HarmonyPatch(typeof(GrabbableObject), "SetScrapValue")]
