@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Odbc;
 using System.IO;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -15,53 +16,40 @@ internal class Patches
         Logger = logger;
     }
     
-    [HarmonyPatch(typeof(StartOfRound), "Start")]
-    [HarmonyPostfix]
-    private static void StartPatch()
-    {
-        Logger.LogInfo("Patching Start in StartOfRound");
-
-        UpdateMaterials(0);
-    }
-    
-    [HarmonyPatch(typeof(RoundManager), "GenerateNewLevelClientRpc")]
-    [HarmonyPostfix]
-    private static void GenerateNewLevelClientRpcPatch(int randomSeed)
-    {
-        Logger.LogInfo("Patching GenerateNewLevelClientRpc in RoundManager");
-        
-        UpdateMaterials(randomSeed);
-    }
-    
     private static void UpdateMaterials(int seed)
     {
         Logger.LogInfo("Patching the textures");
 
         Plugin.Rand = new System.Random(seed);
 
-        var painting = GameObject.Find("Painting");
-        if (painting != null)
+        foreach (var obj in (GameObject[])Object.FindObjectsOfType(typeof(GameObject)))
         {
-            UpdateTexture(Plugin.PaintingFiles, painting.GetComponent<MeshRenderer>().material);
-        }
-
-        var paintingClone = GameObject.Find("Painting(Clone)");
-        if (paintingClone != null)
-        {
-            UpdateTexture(Plugin.PaintingFiles, paintingClone.GetComponent<MeshRenderer>().material);
+            if (obj.name == "Painting" || obj.name == "Painting(Clone)")
+            {
+                UpdateTexture(Plugin.PaintingFiles, obj.GetComponent<MeshRenderer>().material);
+            }
         }
     }
-    
+
+    [HarmonyPatch(typeof(GrabbableObject), "SetScrapValue")]
+    [HarmonyPostfix]
+    private static void SetScrapValuePatch(GrabbableObject __instance)
+    {
+        if (__instance.itemProperties.itemName == "Painting")
+        {
+            UpdateTexture(Plugin.PaintingFiles, __instance.mainObjectRenderer.material);
+        }
+    }
+
     private static void UpdateTexture(IReadOnlyList<string> files, Material material)
     {
         if (files.Count == 0) {return;}
         
         var index = Plugin.Rand.Next(files.Count);
         
-        var texture = new Texture2D(2, 2);
+        var texture = new Texture2D(512, 512);
         Logger.LogInfo($"Patching {material.name} with {files[index]}");
         texture.LoadImage(File.ReadAllBytes(files[index]));
-        
         material.mainTexture = texture;
     }
 }
