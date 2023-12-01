@@ -14,10 +14,15 @@ namespace LethalPaintings
         {
             PosterFolders = Directory.GetDirectories(Paths.PluginPath, PluginInfo.PLUGIN_NAME, SearchOption.AllDirectories).ToList();
             
-            foreach (var file in PosterFolders)
+            foreach (var folder in PosterFolders)
             {
-                if (Path.GetExtension(file) != ".old") { 
-                    PaintingFiles.Add(file);
+
+                foreach (var file in Directory.GetFiles(Path.Combine(folder, "paintings")))
+                {
+                    if (Path.GetExtension(file) != ".old")
+                    {
+                        PaintingFiles.Add(file);
+                    }
                 }
             }
             
