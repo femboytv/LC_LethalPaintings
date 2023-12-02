@@ -21,7 +21,8 @@ internal class Patches
     {
         if (__instance.itemProperties.itemName == "Painting")
         {
-            UpdateTexture(Plugin.PaintingFiles, __instance.mainObjectRenderer.sharedMaterial);
+            UpdateTexture(Plugin.PaintingFiles, __instance.itemProperties.materialVariants[0]);
+            UpdateTexture(Plugin.PaintingFiles, __instance.itemProperties.materialVariants[1]);
         }
     }
 
