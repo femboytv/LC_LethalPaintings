@@ -3,9 +3,9 @@
 # LethalPaintings
 Allows for editing of paintings (just like [LethalPosters](https://thunderstore.io/c/lethal-company/p/femboytv/LethalPosters/))
 
-When making a mod for Thunderstore you have to put all your images in
-`<ZIP ROOT>/BepInEx/plugins/LethalPaintings/paintings/`
+When making a mod for [Thunderstore](https://thunderstore.io/) you have to put all your images in
+- `BepInEx/plugins/LethalPaintings/paintings/`
 
 You can put as many images as you want, and the mod will pick random ones every time you land on a moon
 
-You can grab my personal auto crop tool [here](https://github.com/Atakku/lpg)
+You can also grab my personal auto crop tool [here](https://github.com/Atakku/lpg)
