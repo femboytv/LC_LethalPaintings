@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net47</TargetFramework>
     <AssemblyName>LethalPaintings</AssemblyName>
-    <Description>My first plugin</Description>
+    <Description>LethalCopmany paintings API</Description>
     <Version>1.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
